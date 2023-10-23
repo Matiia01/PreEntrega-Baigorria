@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import ItemListContainer from './components/ItemListContainer';
 import ItemDetailContainer from './components/ItemDetailContainer';
-import Cart from './components/Cart';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -11,7 +10,7 @@ function App() {
   const addToCart = (product, quantity) => {
     // Copia el carrito actual y agrega el nuevo producto con la cantidad
     setCart([...cart, { ...product, quantity }]);
-  };
+  };  
 
   return (
     <Router>
@@ -21,7 +20,6 @@ function App() {
           <Route path="/" element={<ItemListContainer greeting="¡Bienvenido a FireShop!" addToCart={addToCart} />} />
           <Route path="/category/:category" element={<ItemListContainer addToCart={addToCart} />} />
           <Route path="/item/:id" element={<ItemDetailContainer addToCart={addToCart} />} />
-          <Route path="/cart" element={<Cart cart={cart} />} />
         </Routes>
       </div>
     </Router>

@@ -13,9 +13,9 @@ function ItemDetailContainer() {
   }
 
   const addToCart = () => {
-    <button onClick={() => addToCart(product, parseInt(quantity, 10))} className="btn btn-primary">
-      Agregar al Carrito
-    </button>
+    // Agregar el producto al carrito con la cantidad seleccionada
+    // Puedes usar la función addToCart que definiste en App.js
+    // Debes pasar el producto y la cantidad al addToCart
   };
 
   return (
