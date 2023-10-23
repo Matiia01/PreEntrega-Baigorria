@@ -7,7 +7,7 @@ function Cart({ cart }) {
       <ul>
         {cart.map((product) => (
           <li key={product.id}>
-            {product.name} - Cantidad: 1 - Precio total: ${product.price}
+            {product.name} - Cantidad: 0 - Precio total: ${product.price}
           </li>
         ))}
       </ul>
