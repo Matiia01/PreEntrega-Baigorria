@@ -1,19 +1,25 @@
 import React from 'react';
 
+function calculateTotal(cart) {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+}
+
 function Cart({ cart }) {
-  return (
-    <div className="container">
-      <h2>Carrito de Compras</h2>
-      <ul>
-        {cart.map((product) => (
-          <li key={product.id}>
-            {product.name} - Cantidad: 0 - Precio total: ${product.price}
-          </li>
-        ))}
-      </ul>
-      <p>Precio total del carrito: ${cart.reduce((total, product) => total + product.price, 0)}</p>
-    </div>
-  );
+    return (
+        <div className="container">
+            <h2>Carrito de Compras</h2>
+            <ul>
+                {cart.map((item) => (
+                    <li key={item.id}>
+                        <p>{item.name}</p>
+                        <p>Cantidad: {item.quantity}</p>
+                        <p>Precio total: ${item.price * item.quantity}</p>
+                    </li>
+                ))}
+            </ul>
+            <p>Precio total del carrito: ${calculateTotal(cart)}</p>
+        </div>
+    );
 }
 
 export default Cart;
