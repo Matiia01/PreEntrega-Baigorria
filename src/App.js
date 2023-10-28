@@ -9,9 +9,9 @@ function App() {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product, quantity) => {
-    quantity = parseInt(quantity, 10); // Asegura que quantity sea un número entero
+    quantity = parseInt(quantity, 10);
     const existingItem = cart.find((item) => item.id === product.id);
-  
+
     if (existingItem) {
       const updatedCart = cart.map((item) => {
         if (item.id === existingItem.id) {
@@ -19,14 +19,14 @@ function App() {
         }
         return item;
       });
-  
+
       setCart(updatedCart);
     } else {
       setCart([...cart, { ...product, quantity }]);
     }
   };
-  
-  
+
+
 
   return (
     <Router>
@@ -36,7 +36,8 @@ function App() {
           <Route path="/" element={<ItemListContainer greeting="¡Bienvenido a FireShop!" addToCart={addToCart} />} />
           <Route path="/category/:category" element={<ItemListContainer addToCart={addToCart} />} />
           <Route path="/item/:id" element={<ItemDetailContainer addToCart={addToCart} />} />
-          <Route path="/cart" element={<Cart cart={cart} />} />
+          <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
+
         </Routes>
       </div>
     </Router>

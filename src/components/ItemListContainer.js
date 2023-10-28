@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import products from '../data';
 
+
 function ItemListContainer({ greeting }) {
   const { category } = useParams();
 
