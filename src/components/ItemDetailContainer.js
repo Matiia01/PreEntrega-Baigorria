@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import products from '../data';
-import { Link, useNavigate } from 'react-router-dom';
-import ItemCount from './ItemCount'; // Importa el componente ItemCount
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import ItemCount from './ItemCount'; 
 
 const ItemDetailContainer = ({ addToCart }) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const product = products.find((product) => product.id === parseInt(id));
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = getFirestore();
+      const productRef = doc(db, 'Dajajs', id);
+      console.log("Product ID:", id);
+      const productSnapshot = await getDoc(productRef);
+      console.log("Product Snapshot:", productSnapshot.data()); 
+      if (productSnapshot.exists()) {
+        setProduct({ id: productSnapshot.id, ...productSnapshot.data() });
+      } else {
+        navigate('/');
+      }
+    }
+    fetchData();
+  }, [id, navigate]);
+  
 
   if (!product) {
-    return <div>Producto no encontrado</div>;
+    return (
+      <div>
+        <p>Producto no encontrado</p>
+      </div>
+    );
   }
 
   return (
     <div className="container">
-      {/* Flecha de retroceso */}
       <Link to="#" onClick={() => navigate(-1)}>
         <i className="fa fa-arrow-left"></i>
       </Link>
@@ -30,11 +49,11 @@ const ItemDetailContainer = ({ addToCart }) => {
           <p className="card-text">Prestaciones: {product.brand}</p>
           <p className="card-text">Peso: {product.weight}</p>
           <p className="card-text">Colores: {product.color}</p>
-          <ItemCount // Agrega el componente ItemCount
-            initial={1} // Define el valor inicial
-            stock={10} // Define el stock disponible
-            onAdd={(count) => addToCart(product, count)} // Callback para agregar al carrito
-          />
+          <ItemCount
+        initial={1}
+        stock={10}
+        onAdd={(count) => addToCart(product, count)}
+      />
         </div>
       </div>
     </div>

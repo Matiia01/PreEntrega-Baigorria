@@ -1,10 +1,23 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import products from '../data';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import Item from './Item';
 
-
-function ItemListContainer({ greeting }) {
+function ItemListContainer({ greeting, addToCart }) {
   const { category } = useParams();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const db = getFirestore();
+      const productsCollection = collection(db, 'Dajajs');
+      const productsSnapshot = await getDocs(productsCollection);
+      const productsData = productsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setProducts(productsData);
+    }
+
+    fetchData();
+  }, []);
 
   const filteredProducts = products.filter((product) => category ? product.category === category : true);
 
@@ -14,17 +27,7 @@ function ItemListContainer({ greeting }) {
       <div className="row">
         {filteredProducts.map((product) => (
           <div className="col-lg-4 col-md-6 mb-4" key={product.id}>
-            <div className="card">
-              <img src={product.image} className="card-img-top" alt={`Imagen de ${product.name}`} />
-              <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.description}</p>
-                <p className="card-text">Precio: ${product.price}</p>
-                <Link to={`/item/${product.id}`} className="btn btn-primary">
-                  Ver Detalles
-                </Link>
-              </div>
-            </div>
+            <Item product={product} addToCart={addToCart} />
           </div>
         ))}
       </div>

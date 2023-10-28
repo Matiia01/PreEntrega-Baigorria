@@ -3,16 +3,14 @@ import { Link } from 'react-router-dom';
 
 function Cart({ cart, setCart }) {
     const removeFromCart = (product) => {
-        // Filtra el carrito para excluir el producto a eliminar
         const updatedCart = cart.filter((item) => item.id !== product.id);
         setCart(updatedCart);
     };
 
     const removeAllItems = () => {
-        setCart([]); // Elimina todos los productos del carrito
+        setCart([]);
     };
 
-    // Función para calcular el precio total del carrito
     function calculateTotal(cart) {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     }
@@ -42,16 +40,13 @@ function Cart({ cart, setCart }) {
                         <div className="card-body">
                             <h5 className="card-title">Precio Total</h5>
                             <p className="card-text">Total: ${calculateTotal(cart)}</p>
-                            {/* Botón para "Terminar mi compra" */}
                             <button className="btn btn-success">Terminar mi compra</button>
-                            {/* Botón para "Eliminar Todo el Carrito" */}
                             <button onClick={removeAllItems} className="btn btn-danger">Eliminar Todo el Carrito</button>
                         </div>
                     </div></>
             )}
             {cart.length > 0 && (
                 <div className="cart-widget">
-                    {/* Contenido del CartWidget */}
                 </div>
             )}
         </div>
